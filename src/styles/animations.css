@@ -1,0 +1,261 @@
+/* Cursor blinking */
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s infinite step-end;
+}
+
+/* CRT flickering screen */
+@keyframes crt-flicker {
+  0% { opacity: 0.985; }
+  50% { opacity: 0.995; }
+  100% { opacity: 0.985; }
+}
+
+/* Scanline moving sweep */
+@keyframes scanline-sweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Glitch effects */
+@keyframes glitch-anim {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+  }
+  40% {
+    clip-path: inset(25% 0 58% 0);
+  }
+  60% {
+    clip-path: inset(75% 0 5% 0);
+  }
+  80% {
+    clip-path: inset(15% 0 80% 0);
+  }
+  100% {
+    clip-path: inset(50% 0 43% 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(24% 0 43% 0);
+  }
+  20% {
+    clip-path: inset(85% 0 5% 0);
+  }
+  40% {
+    clip-path: inset(3% 0 92% 0);
+  }
+  60% {
+    clip-path: inset(62% 0 15% 0);
+  }
+  80% {
+    clip-path: inset(80% 0 5% 0);
+  }
+  100% {
+    clip-path: inset(10% 0 85% 0);
+  }
+}
+
+/* TUI card border neon cycling */
+@keyframes border-glow-cycle {
+  0% {
+    border-color: var(--color-magenta);
+    box-shadow: var(--glow-magenta);
+  }
+  50% {
+    border-color: var(--color-neon);
+    box-shadow: var(--glow-neon);
+  }
+  100% {
+    border-color: var(--color-magenta);
+    box-shadow: var(--glow-magenta);
+  }
+}
+
+.animate-glow-cycle {
+  animation: border-glow-cycle 4s infinite linear;
+}
+
+/* Animated SYS_NODE icons wave */
+@keyframes sys-node-wave {
+  0%, 100% {
+    transform: translateY(0);
+    color: var(--color-white-20);
+    text-shadow: none;
+  }
+  50% {
+    transform: translateY(-3px);
+    color: var(--color-neon);
+    text-shadow: 0 0 5px var(--color-neon-50), 0 0 10px var(--color-neon-50);
+  }
+}
+
+.animate-sys-node-1 {
+  display: inline-block;
+  animation: sys-node-wave 1.2s infinite ease-in-out;
+  animation-delay: 0s;
+}
+
+.animate-sys-node-2 {
+  display: inline-block;
+  animation: sys-node-wave 1.2s infinite ease-in-out;
+  animation-delay: 0.2s;
+}
+
+.animate-sys-node-3 {
+  display: inline-block;
+  animation: sys-node-wave 1.2s infinite ease-in-out;
+  animation-delay: 0.4s;
+}
+
+/* Animated footer icons pulsing wave */
+@keyframes footer-icon-pulse {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    color: var(--color-white-40);
+    filter: drop-shadow(0 0 0px transparent);
+  }
+  50% {
+    transform: scale(1.15) translateY(-2px);
+    color: var(--color-neon);
+    filter: drop-shadow(0 0 4px var(--color-neon-50));
+  }
+}
+
+.animate-footer-icon-1 {
+  display: inline-flex;
+  animation: footer-icon-pulse 2s infinite ease-in-out;
+  animation-delay: 0s;
+}
+
+.animate-footer-icon-2 {
+  display: inline-flex;
+  animation: footer-icon-pulse 2s infinite ease-in-out;
+  animation-delay: 0.4s;
+}
+
+.animate-footer-icon-3 {
+  display: inline-flex;
+  animation: footer-icon-pulse 2s infinite ease-in-out;
+  animation-delay: 0.8s;
+}
+
+/* Unified Global text beam keyframes for synchronized viewport-wide horizontal sweeping (constant 5s loop) */
+@keyframes text-beam-global {
+  0% {
+    background-position: -100vw 0;
+  }
+  100% {
+    background-position: 100vw 0;
+  }
+}
+
+/* Universal horizontal sweeping overlay class (works on text, icons, SVGs, divs) */
+.animate-beam {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.animate-beam::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 42%,
+    var(--color-black) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  background-size: 200vw 100%;
+  background-attachment: fixed;
+  animation: text-beam-global 5s linear infinite;
+  z-index: 10;
+}
+
+/* Color utilities for easy styling alongside the animate-beam class */
+.text-red { color: #ff3333 !important; }
+.text-yellow { color: #ffcc00 !important; }
+.text-blue { color: #3366ff !important; }
+.text-orange { color: #ff6600 !important; }
+.text-white-40 { color: var(--color-white-40) !important; }
+.text-neon { color: var(--color-neon) !important; }
+
+
+
+@keyframes global-corruption {
+  0% { transform: translateX(0); opacity: 1; }
+  10% { transform: translateX(-2px); opacity: 0.95; }
+  20% { transform: translateX(2px); opacity: 0.9; }
+  30% { transform: translateX(-1px); opacity: 1; }
+  40% { transform: translateX(3px); opacity: 0.95; }
+  50% { transform: translateX(-2px); opacity: 0.9; }
+  60% { transform: translateX(1px); opacity: 1; }
+  70% { transform: translateX(-1px); opacity: 0.95; }
+  80% { transform: translateX(2px); opacity: 1; }
+  90% { transform: translateX(-1px); opacity: 0.95; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.corrupted-active {
+  animation: global-corruption 0.25s steps(3, start) both;
+}
+
+
+@keyframes electric-breathe {
+  0%, 100% { 
+    box-shadow: inset 0 0 10px var(--color-neon-05), 0 0 10px var(--color-neon-10); 
+    border-color: var(--color-neon-darker);
+  }
+  50% { 
+    box-shadow: inset 0 0 20px var(--color-neon-10), 0 0 20px var(--color-neon-40); 
+    border-color: var(--color-neon);
+  }
+}
+
+@keyframes slow-pan {
+  0% { background-position: 0px 0px; }
+  100% { background-position: 20px 20px; }
+}
+
+@keyframes slow-pan {
+  0% { background-position: 0px 0px; }
+  100% { background-position: 20px 20px; }
+}
+
+.electric-panel {
+  background-image: 
+    linear-gradient(rgba(228, 25, 81, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(228, 25, 81, 0.045) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: electric-breathe 5s ease-in-out infinite, slow-pan 25s linear infinite;
+}
+
+/* Banner Corrupto y Derretido Sutil */
+.banner-melt-container {
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+}

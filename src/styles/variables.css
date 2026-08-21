@@ -1,0 +1,72 @@
+:root {
+  /* Core Color Palette (Cyberpunk Scarlet Protocol Ghostty theme) */
+  --color-black: #101116;
+  --color-white: #ffffff;
+  --color-magenta: #e41951;  /* Scarlet / Foreground */
+  --color-neon: #60fdff;     /* Bright Cyan for accents */
+
+  /* Opacities of White */
+  --color-white-05: rgba(255, 255, 255, 0.05);
+  --color-white-10: rgba(255, 255, 255, 0.1);
+  --color-white-20: rgba(255, 255, 255, 0.2);
+  --color-white-40: rgba(255, 255, 255, 0.4);
+  --color-white-60: rgba(255, 255, 255, 0.6);
+  --color-white-80: rgba(255, 255, 255, 0.8);
+
+  /* Solid Color Variants (No Glows) - approximated from theme */
+  --color-magenta-dark: #b80a3a;
+  --color-magenta-darker: #8b062b;
+  --color-magenta-deep: #460215;
+  --color-neon-dark: #3fb6b8;
+  --color-neon-darker: #2f888a;
+  --color-neon-deep: #174445;
+
+  /* Transparent variants for borders/sweeps */
+  --color-magenta-05: rgba(228, 25, 81, 0.05);
+  --color-magenta-10: rgba(228, 25, 81, 0.1);
+  --color-magenta-20: rgba(228, 25, 81, 0.2);
+  --color-magenta-50: rgba(228, 25, 81, 0.5);
+
+  --color-neon-05: rgba(96, 253, 255, 0.05);
+  --color-neon-10: rgba(96, 253, 255, 0.1);
+  --color-neon-20: rgba(96, 253, 255, 0.2);
+  --color-neon-50: rgba(96, 253, 255, 0.5);
+
+  /* Fonts */
+  --font-mono: 'JetBrains Mono', 'FiraCode Nerd Font Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.5rem;
+
+  /* Espaciamiento */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Borders */
+  --border-thin: 1px solid var(--color-white-20);
+  --border-white: 1px solid var(--color-white);
+  --border-magenta: 1px solid var(--color-magenta);
+  --border-neon: 1px solid var(--color-neon);
+
+  /* Transiciones */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* Z-index layers */
+  --z-background: 0;
+  --z-scanlines: 5;
+  --z-content: 10;
+  --z-overlay: 20;
+  --z-modal: 30;
+  --z-toast: 40;
+}
