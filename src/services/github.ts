@@ -1,4 +1,4 @@
-import type { GitHubEvent } from '../types';
+import type { GitHubEvent, GitHubEventType } from '../types';
 
 // Datos de respaldo para GitHub
 const mockGitHubEvents: GitHubEvent[] = [
@@ -47,7 +47,7 @@ export const fetchGitHubActivity = async (username: string): Promise<GitHubEvent
     for (const event of data) {
       if (parsedEvents.length >= 3) break;
 
-      let type = '';
+      let type: GitHubEventType;
       let actionText = '';
 
       switch (event.type) {

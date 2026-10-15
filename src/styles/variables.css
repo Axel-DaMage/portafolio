@@ -47,19 +47,15 @@
   --color-white-10: rgba(205, 214, 244, 0.1);
   --color-white-20: rgba(205, 214, 244, 0.2);
   --color-white-40: rgba(205, 214, 244, 0.4);
-  --color-white-60: rgba(205, 214, 244, 0.6);
   --color-white-80: rgba(205, 214, 244, 0.8);
 
   /* Transparent variants for accents */
   --color-magenta-05: rgba(203, 166, 247, 0.05);
   --color-magenta-10: rgba(203, 166, 247, 0.1);
   --color-magenta-20: rgba(203, 166, 247, 0.2);
-  --color-magenta-50: rgba(203, 166, 247, 0.5);
 
-  --color-neon-05: rgba(148, 226, 213, 0.05);
   --color-neon-10: rgba(148, 226, 213, 0.1);
   --color-neon-20: rgba(148, 226, 213, 0.2);
-  --color-neon-50: rgba(148, 226, 213, 0.5);
 
   --color-blue-10: rgba(137, 180, 250, 0.1);
   --color-blue-20: rgba(137, 180, 250, 0.2);

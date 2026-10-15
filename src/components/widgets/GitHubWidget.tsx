@@ -1,7 +1,7 @@
 import React from 'react';
 import useSWR from 'swr';
 import { fetchGitHubActivity } from '../../services/github';
-import type { GitHubEvent } from '../../types';
+import type { GitHubEvent, GitHubEventType } from '../../types';
 import { useLiveTimer } from '../../hooks/useLiveTimer';
 
 interface EventItemProps {
@@ -11,13 +11,19 @@ interface EventItemProps {
 const EventItem: React.FC<EventItemProps> = ({ event }) => {
   const relativeTime = useLiveTimer(event.timestamp);
 
-  const getTypeBadgeColor = (type: string) => {
+  const getTypeBadgeColor = (type: GitHubEventType) => {
     switch (type) {
       case 'PUSH':
         return 'text-ctp-mauve bg-ctp-surface0';
       case 'STAR':
         return 'text-ctp-yellow bg-ctp-surface0';
       case 'CREATE':
+        return 'text-ctp-green bg-ctp-surface0';
+      case 'FORK':
+        return 'text-ctp-blue bg-ctp-surface0';
+      case 'ISSUE':
+        return 'text-ctp-peach bg-ctp-surface0';
+      case 'PR':
         return 'text-ctp-green bg-ctp-surface0';
       default:
         return 'text-ctp-teal bg-ctp-surface0';
@@ -71,8 +77,8 @@ export const GitHubWidget: React.FC = () => {
 
   return (
     <div className="flex flex-col items-start w-full text-left">
-      {data.map((event, index) => (
-        <EventItem key={index} event={event} />
+      {data.map((event) => (
+        <EventItem key={`${event.repo}-${event.timestamp}`} event={event} />
       ))}
     </div>
   );
