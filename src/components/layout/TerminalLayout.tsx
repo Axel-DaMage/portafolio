@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { NAV_TABS, VIM_BLOCKS, type NavMode } from '../../types';
 import { ModeModal } from '../ui/ModeModal';
+import './sidebar.css';
+
+const MOBILE_BREAKPOINT = '(max-width: 767px)';
 
 interface TerminalLayoutProps {
   children: React.ReactNode;
@@ -19,7 +22,31 @@ export const TerminalLayout: React.FC<TerminalLayoutProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollPercent, setScrollPercent] = useState<number>(0);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+
+  // Mobile viewports render the sidebar as an overlay drawer, closed by default
+  const [isMobile, setIsMobile] = useState<boolean>(() => window.matchMedia(MOBILE_BREAKPOINT).matches);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => !window.matchMedia(MOBILE_BREAKPOINT).matches);
+
+  // Sync sidebar state on breakpoint changes: entering mobile closes it, leaving reopens it
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_BREAKPOINT);
+    const handleBreakpoint = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+      setIsSidebarOpen(!e.matches);
+    };
+    mql.addEventListener('change', handleBreakpoint);
+    return () => mql.removeEventListener('change', handleBreakpoint);
+  }, []);
+
+  // Escape closes the mobile overlay drawer
+  useEffect(() => {
+    if (!isMobile || !isSidebarOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsSidebarOpen(false);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isMobile, isSidebarOpen]);
 
   // Navigation mode state (Vim vs Normal)
   const [navMode, setNavMode] = useState<NavMode>(() => {
@@ -228,13 +255,13 @@ export const TerminalLayout: React.FC<TerminalLayoutProps> = ({
             
             {/* Neo-tree Sidebar: Files placed right at the top */}
             {isSidebarOpen && (
-              <aside className="w-56 md:w-60 min-w-[14rem] md:min-w-[15rem] h-full border-r border-ctp-surface0 bg-ctp-mantle flex flex-col justify-between text-xs select-none overflow-y-auto text-left">
+              <aside className="tui-sidebar h-full bg-ctp-mantle flex flex-col justify-between text-xs select-none overflow-y-auto text-left">
                 {/* Top Section: Header & Files list directly at top */}
                 <div className="flex flex-col w-full text-left">
                   {/* Header */}
                   <div className="p-2 border-b border-ctp-surface0 flex items-center justify-between text-[11px] text-ctp-subtext font-bold">
-                    <span>NEO-TREE [proyecto]</span>
-                    <button onClick={() => setIsSidebarOpen(false)} className="text-[10px] text-ctp-overlay hover:text-ctp-subtext">[b:ocultar]</button>
+                    <span className="neo-tree-header-title">NEO-TREE [proyecto]</span>
+                    <button onClick={() => setIsSidebarOpen(false)} className="neo-tree-hide-btn text-[10px] text-ctp-overlay hover:text-ctp-subtext">[b:ocultar]</button>
                   </div>
 
                   {/* Files Tree right at top of sidebar */}
@@ -256,7 +283,10 @@ export const TerminalLayout: React.FC<TerminalLayoutProps> = ({
                       return (
                         <button
                           key={tab.id}
-                          onClick={() => scrollToSection(tab.id)}
+                          onClick={() => {
+                            scrollToSection(tab.id);
+                            if (isMobile) setIsSidebarOpen(false);
+                          }}
                           className={`flex items-center gap-1.5 py-1 px-1 text-left w-full transition-colors rounded-none ${
                             isActive
                               ? 'bg-ctp-surface0 text-ctp-mauve font-bold'
@@ -297,7 +327,7 @@ export const TerminalLayout: React.FC<TerminalLayoutProps> = ({
                       {navMode === 'vim' ? 'VIM' : 'NORMAL'} [m]
                     </button>
                   </div>
-                  <div className="pt-1.5 border-t border-ctp-surface0 flex justify-around text-center text-[10px]">
+                  <div className="pt-1.5 border-t border-ctp-surface0 flex neo-tree-footer-links text-center text-[10px]">
                     <a
                       href="https://github.com/Axel-DaMage"
                       target="_blank"
