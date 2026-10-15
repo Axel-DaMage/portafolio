@@ -1,37 +1,31 @@
-export interface GitHubEvent {
-  type: string;
-  repo: string;
-  timestamp: string; // ISO 24h format
-  actionText: string;
-}
+import type { GitHubEvent } from '../types';
 
-// Elegant Mock Data for fallback
+// Datos de respaldo para GitHub
 const mockGitHubEvents: GitHubEvent[] = [
   {
     type: 'PUSH',
     repo: 'Axel-DaMage/portafolio',
-    timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(), // 3 mins ago
-    actionText: 'pushed to Axel-DaMage/portafolio (feat: add crt styling & widgets)',
+    timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+    actionText: 'push en Axel-DaMage/portafolio (feat: paleta catppuccin y modo visual)',
   },
   {
     type: 'STAR',
     repo: 'Nomadcxx/sysc-Go',
-    timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(), // 45 mins ago
-    actionText: 'starred Nomadcxx/sysc-Go',
+    timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+    actionText: 'estrella en Nomadcxx/sysc-Go',
   },
   {
     type: 'CREATE',
     repo: 'Axel-DaMage/cli-tetris',
-    timestamp: new Date(Date.now() - 3.5 * 60 * 60 * 1000).toISOString(), // 3.5 hrs ago
-    actionText: 'created repository Axel-DaMage/cli-tetris',
+    timestamp: new Date(Date.now() - 3.5 * 60 * 60 * 1000).toISOString(),
+    actionText: 'creó repositorio Axel-DaMage/cli-tetris',
   },
 ];
 
 export const fetchGitHubActivity = async (username: string): Promise<GitHubEvent[]> => {
   const token = import.meta.env.VITE_GITHUB_TOKEN;
-  
+
   if (!token || username === 'mock' || username === '') {
-    // Graceful fallback to mock data
     return mockGitHubEvents;
   }
 
@@ -44,46 +38,45 @@ export const fetchGitHubActivity = async (username: string): Promise<GitHubEvent
     });
 
     if (!response.ok) {
-      throw new Error(`GitHub API returned status ${response.status}`);
+      throw new Error(`GitHub API retornó estado ${response.status}`);
     }
 
     const data = await response.json();
-    
-    // Parse top 3 interactive events
+
     const parsedEvents: GitHubEvent[] = [];
     for (const event of data) {
       if (parsedEvents.length >= 3) break;
-      
+
       let type = '';
       let actionText = '';
 
       switch (event.type) {
         case 'PushEvent':
           type = 'PUSH';
-          actionText = `pushed to ${event.repo.name}`;
+          actionText = `push en ${event.repo.name}`;
           break;
         case 'WatchEvent':
           type = 'STAR';
-          actionText = `starred ${event.repo.name}`;
+          actionText = `destacó ${event.repo.name}`;
           break;
         case 'CreateEvent':
           type = 'CREATE';
-          actionText = `created ${event.repo.name}`;
+          actionText = `creó ${event.repo.name}`;
           break;
         case 'ForkEvent':
           type = 'FORK';
-          actionText = `forked ${event.repo.name}`;
+          actionText = `fork en ${event.repo.name}`;
           break;
         case 'IssuesEvent':
           type = 'ISSUE';
-          actionText = `${event.payload.action} issue in ${event.repo.name}`;
+          actionText = `issue en ${event.repo.name}`;
           break;
         case 'PullRequestEvent':
           type = 'PR';
-          actionText = `${event.payload.action} PR in ${event.repo.name}`;
+          actionText = `pull request en ${event.repo.name}`;
           break;
         default:
-          continue; // Skip irrelevant events
+          continue;
       }
 
       parsedEvents.push({
@@ -96,7 +89,7 @@ export const fetchGitHubActivity = async (username: string): Promise<GitHubEvent
 
     return parsedEvents.length > 0 ? parsedEvents : mockGitHubEvents;
   } catch (error) {
-    console.warn('Failed to fetch real-time GitHub events, loading fallback data...', error);
+    console.warn('Fallo al obtener eventos en tiempo real de GitHub, cargando datos locales...', error);
     return mockGitHubEvents;
   }
 };

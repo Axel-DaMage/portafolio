@@ -1,19 +1,4 @@
-export interface WakaTimeLanguage {
-  name: string;
-  percent: number;
-}
-
-export interface WakaTimeEditor {
-  name: string;
-  percent: number;
-}
-
-export interface WakaTimeStats {
-  totalHours7d: string;
-  totalHoursToday: string;
-  languages: WakaTimeLanguage[];
-  editors: WakaTimeEditor[];
-}
+import type { WakaTimeStats } from '../types';
 
 // Elegant Mock Data for WakaTime
 const mockWakaTimeStats: WakaTimeStats = {

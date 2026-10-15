@@ -15,65 +15,72 @@ export const WakaTimeWidget: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="font-mono text-xs opacity-60 flex items-center justify-center gap-2 py-4">
+      <div className="font-mono text-xs opacity-60 flex items-center gap-2 py-2">
         <span className="animate-spin inline-block">⠋</span>
-        <span>FETCHING WAKATIME CORE TELEMETRY...</span>
+        <span>Cargando telemetría...</span>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="text-[var(--color-magenta)] text-xs font-mono text-center py-4">
-        [ERROR] CONNECTION TIMEOUT RETRIEVING WAKATIME CORE METRICS
+      <div className="text-ctp-red text-xs font-mono py-2">
+        Conexión no disponible con WakaTime
       </div>
     );
   }
 
   return (
-    <div className="font-mono text-sm w-full flex flex-col items-center justify-center">
-      <div className="grid grid-cols-2 gap-4 mb-4 text-xs w-full max-w-sm">
-        <div className="border border-[var(--color-white-10)] p-2 text-center">
-          <div className="opacity-45 mb-1">TOTAL WORKTIME (7d)</div>
-          <div className="text-base font-bold text-[var(--color-neon)] glow-text-neon">
+    <div className="font-mono text-xs w-full flex flex-col items-start text-left space-y-3">
+      {/* Hours Overview */}
+      <div className="grid grid-cols-2 gap-2 w-full">
+        <div className="p-2 bg-ctp-surface0/30 border border-ctp-surface0">
+          <div className="text-[10px] text-ctp-subtext mb-0.5">Últimos 7 días</div>
+          <div className="text-sm font-bold text-ctp-teal">
             {data.totalHours7d}
           </div>
         </div>
-        <div className="border border-[var(--color-white-10)] p-2 text-center">
-          <div className="opacity-45 mb-1">DAILY WORKTIME (TODAY)</div>
-          <div className="text-base font-bold text-[var(--color-magenta)] glow-text-magenta">
+        <div className="p-2 bg-ctp-surface0/30 border border-ctp-surface0">
+          <div className="text-[10px] text-ctp-subtext mb-0.5">Hoy</div>
+          <div className="text-sm font-bold text-ctp-mauve">
             {data.totalHoursToday}
           </div>
         </div>
       </div>
 
-      <div className="space-y-4 w-full max-w-sm">
-        <div className="w-full flex flex-col items-center">
-          <div className="text-xs text-[var(--color-neon)] font-bold mb-2 tracking-wider text-center">
-            TOP LANGUAGES
-          </div>
-          <div className="space-y-2 border border-[var(--color-white-10)] p-3 w-full flex flex-col items-center">
-            {data.languages.map((lang, index) => (
-              <div key={index} className="flex flex-col items-center justify-center gap-1 text-xs w-full">
-                <span className="text-[var(--color-white)] font-semibold mb-0.5">{lang.name}</span>
-                <ProgressBar value={lang.percent} width={15} color="neon" />
-              </div>
-            ))}
-          </div>
+      {/* Languages */}
+      <div className="w-full space-y-1.5">
+        <div className="text-[11px] text-ctp-peach font-bold">
+          Lenguajes
         </div>
-
-        <div className="w-full flex flex-col items-center">
-          <div className="text-xs text-[var(--color-magenta)] font-bold mb-2 tracking-wider text-center">
-            PREFERRED ENVIRONMENT
-          </div>
-          <div className="space-y-2 border border-[var(--color-white-10)] p-3 w-full flex flex-col items-center">
-            {data.editors.map((editor, index) => (
-              <div key={index} className="flex flex-col items-center justify-center gap-1 text-xs w-full">
-                <span className="text-[var(--color-white)] font-semibold mb-0.5">{editor.name}</span>
-                <ProgressBar value={editor.percent} width={15} color="magenta" />
+        <div className="space-y-1.5 p-2 bg-ctp-surface0/30 border border-ctp-surface0 w-full">
+          {data.languages.slice(0, 4).map((lang, index) => (
+            <div key={index} className="flex items-center justify-between text-xs w-full">
+              <span className="text-[var(--color-white-80)]">{lang.name}</span>
+              <div className="flex items-center gap-2">
+                <ProgressBar value={lang.percent} width={12} color="neon" />
+                <span className="text-[10px] text-ctp-subtext w-7 text-right">{lang.percent}%</span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Editors */}
+      <div className="w-full space-y-1.5">
+        <div className="text-[11px] text-ctp-blue font-bold">
+          Editores
+        </div>
+        <div className="space-y-1.5 p-2 bg-ctp-surface0/30 border border-ctp-surface0 w-full">
+          {data.editors.map((editor, index) => (
+            <div key={index} className="flex items-center justify-between text-xs w-full">
+              <span className="text-[var(--color-white-80)]">{editor.name}</span>
+              <div className="flex items-center gap-2">
+                <ProgressBar value={editor.percent} width={12} color="magenta" />
+                <span className="text-[10px] text-ctp-subtext w-7 text-right">{editor.percent}%</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

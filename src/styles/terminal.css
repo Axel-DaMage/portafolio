@@ -54,16 +54,17 @@
   color: var(--color-black);
 }
 
-/* CRT Screen vignette corner shadows */
+/* CRT Screen vignette corner shadows (subtle, non-obscuring) */
 .crt-vignette {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.7);
-  z-index: var(--z-overlay);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25);
+  z-index: 1;
   pointer-events: none;
+  opacity: 0.3;
 }
 
 
@@ -119,7 +120,17 @@
 .w-full { width: 100% !important; }
 .h-full { height: 100% !important; }
 .w-64 { width: 16rem !important; }
+.h-6 { height: 1.5rem !important; }
+.h-7 { height: 1.75rem !important; }
+.h-8 { height: 2rem !important; }
+.h-9 { height: 2.25rem !important; }
+.h-10 { height: 2.5rem !important; }
 .h-14 { height: 3.5rem !important; }
+.min-h-6 { min-height: 1.5rem !important; }
+.min-h-7 { min-height: 1.75rem !important; }
+.min-h-8 { min-height: 2rem !important; }
+.min-h-9 { min-height: 2.25rem !important; }
+.min-h-10 { min-height: 2.5rem !important; }
 .w-screen { width: 100vw !important; }
 .h-screen { height: 100vh !important; }
 .min-h-screen { min-height: 100vh !important; }
@@ -298,6 +309,44 @@ textarea {
 .z-10 { z-index: 10 !important; }
 .z-20 { z-index: 20 !important; }
 .z-30 { z-index: 30 !important; }
+.z-40 { z-index: 40 !important; }
+.z-50 { z-index: 50 !important; }
+
+/* Space-y utilities */
+.space-y-2 > * + * { margin-top: 0.5rem !important; }
+.space-y-3 > * + * { margin-top: 0.75rem !important; }
+.space-y-4 > * + * { margin-top: 1rem !important; }
+.space-y-6 > * + * { margin-top: 1.5rem !important; }
+
+/* Dedicated TUI Bars: guaranteed standard heights and no squishing */
+.tui-bufferline {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.tui-statusline {
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.tui-commandline {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.modal-backdrop {
+  background-color: rgba(17, 17, 27, 0.88) !important;
+  backdrop-filter: blur(4px);
+}
 
 
 .scanlines {
@@ -308,4 +357,90 @@ textarea {
   pointer-events: none;
   z-index: var(--z-scanlines);
 }
+
+/* Custom TUI Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-white-20);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon);
+}
+
+/* TUI Layout & State Utilities */
+.border-r { border-right: 1px solid var(--color-white-20) !important; }
+.border-b { border-bottom: 1px solid var(--color-white-20) !important; }
+.border-t { border-top: 1px solid var(--color-white-20) !important; }
+.w-60 { width: 15rem !important; }
+.min-w-60 { min-width: 15rem !important; }
+.w-64 { width: 16rem !important; }
+.min-w-64 { min-width: 16rem !important; }
+.flex-1 { flex: 1 1 0% !important; }
+.cursor-pointer { cursor: pointer !important; }
+.scroll-smooth { scroll-behavior: smooth !important; }
+.bg-magenta { background-color: var(--color-magenta) !important; }
+.bg-neon { background-color: var(--color-neon) !important; }
+.bg-black { background-color: var(--color-black) !important; }
+.text-black { color: var(--color-black) !important; }
+.bg-white-05 { background-color: var(--color-white-05) !important; }
+.bg-white-10 { background-color: var(--color-white-10) !important; }
+.bg-magenta-10 { background-color: var(--color-magenta-10) !important; }
+.bg-magenta-20 { background-color: var(--color-magenta-20) !important; }
+.bg-neon-10 { background-color: var(--color-neon-10) !important; }
+.bg-neon-20 { background-color: var(--color-neon-20) !important; }
+.border-magenta { border-color: var(--color-magenta) !important; }
+.border-neon { border-color: var(--color-neon) !important; }
+.border-white-10 { border-color: var(--color-white-10) !important; }
+.border-white-20 { border-color: var(--color-white-20) !important; }
+.border-white-40 { border-color: var(--color-white-40) !important; }
+
+/* Catppuccin Mocha utilities */
+.text-ctp-mauve { color: var(--ctp-mauve) !important; }
+.text-ctp-teal { color: var(--ctp-teal) !important; }
+.text-ctp-blue { color: var(--ctp-blue) !important; }
+.text-ctp-peach { color: var(--ctp-peach) !important; }
+.text-ctp-green { color: var(--ctp-green) !important; }
+.text-ctp-yellow { color: var(--ctp-yellow) !important; }
+.text-ctp-red { color: var(--ctp-red) !important; }
+.text-ctp-sapphire { color: var(--ctp-sapphire) !important; }
+.text-ctp-lavender { color: var(--ctp-lavender) !important; }
+.text-ctp-pink { color: var(--ctp-pink) !important; }
+.text-ctp-subtext { color: var(--ctp-subtext0) !important; }
+.text-ctp-overlay { color: var(--ctp-overlay1) !important; }
+
+.bg-ctp-base { background-color: var(--ctp-base) !important; }
+.bg-ctp-mantle { background-color: var(--ctp-mantle) !important; }
+.bg-ctp-crust { background-color: var(--ctp-crust) !important; }
+.bg-ctp-surface0 { background-color: var(--ctp-surface0) !important; }
+.bg-ctp-surface1 { background-color: var(--ctp-surface1) !important; }
+.bg-ctp-surface2 { background-color: var(--ctp-surface2) !important; }
+
+.border-ctp-surface1 { border-color: var(--ctp-surface1) !important; }
+.border-ctp-surface2 { border-color: var(--ctp-surface2) !important; }
+.border-ctp-mauve { border-color: var(--ctp-mauve) !important; }
+.border-ctp-teal { border-color: var(--ctp-teal) !important; }
+.border-ctp-blue { border-color: var(--ctp-blue) !important; }
+
+/* Visual Block Mode Highlighting (Neutral Borders, No Color on Borders) */
+.vim-block {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  border: 1px solid var(--ctp-surface0) !important;
+  background-color: transparent;
+}
+.vim-block.vim-block-active {
+  background-color: rgba(49, 50, 68, 0.45) !important;
+  border-color: var(--ctp-surface2) !important;
+  box-shadow: none !important;
+}
+.vim-block:hover {
+  border-color: var(--ctp-surface1) !important;
+}
+
+
 

@@ -10,12 +10,16 @@ export const GlitchText: React.FC<GlitchTextProps> = ({ text, className = '', de
   const [isGlitching, setIsGlitching] = useState(false);
 
   useEffect(() => {
+    let glitchTimeout: ReturnType<typeof setTimeout>;
     const glitchInterval = setInterval(() => {
       setIsGlitching(true);
-      setTimeout(() => setIsGlitching(false), 250); // Glitch lasts 250ms
+      glitchTimeout = setTimeout(() => setIsGlitching(false), 250); // Glitch lasts 250ms
     }, delay + Math.random() * 2000); // Random offset for organic feel
 
-    return () => clearInterval(glitchInterval);
+    return () => {
+      clearInterval(glitchInterval);
+      clearTimeout(glitchTimeout);
+    };
   }, [delay]);
 
   return (

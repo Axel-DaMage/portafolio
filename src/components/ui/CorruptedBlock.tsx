@@ -19,6 +19,7 @@ export const CorruptedBlock: React.FC<CorruptedBlockProps> = ({
     const randDelay = intensity === 'high' ? 2000 : intensity === 'medium' ? 5000 : 8000;
 
     let timeoutId: ReturnType<typeof setTimeout>;
+    let innerTimeoutId: ReturnType<typeof setTimeout>;
 
     const scheduleNextCorruption = () => {
       const nextCorruptionIn = minDelay + Math.random() * randDelay;
@@ -26,7 +27,7 @@ export const CorruptedBlock: React.FC<CorruptedBlockProps> = ({
       timeoutId = setTimeout(() => {
         setIsCorrupted(true);
         
-        setTimeout(() => {
+        innerTimeoutId = setTimeout(() => {
           setIsCorrupted(false);
           scheduleNextCorruption();
         }, 150 + Math.random() * 200); // 150ms a 350ms duration
@@ -38,6 +39,7 @@ export const CorruptedBlock: React.FC<CorruptedBlockProps> = ({
 
     return () => {
       clearTimeout(timeoutId);
+      clearTimeout(innerTimeoutId);
     };
   }, [intensity]);
 
