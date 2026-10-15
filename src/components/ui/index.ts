@@ -7,3 +7,4 @@ export * from './Separator';
 export * from './GlitchText';
 export * from './CorruptedBlock';
 export * from './WindowPanel';
+export * from './CommandLine';
