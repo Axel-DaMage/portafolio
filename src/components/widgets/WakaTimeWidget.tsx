@@ -41,9 +41,9 @@ export const WakaTimeWidget: React.FC = () => {
           </div>
         </div>
         <div className="p-2 bg-ctp-surface0/30 border border-ctp-surface0">
-          <div className="text-[10px] text-ctp-subtext mb-0.5">Hoy</div>
+          <div className="text-[10px] text-ctp-subtext mb-0.5">Promedio diario</div>
           <div className="text-sm font-bold text-ctp-mauve">
-            {data.totalHoursToday}
+            {data.dailyAverage}
           </div>
         </div>
       </div>
@@ -54,8 +54,8 @@ export const WakaTimeWidget: React.FC = () => {
           Lenguajes
         </div>
         <div className="space-y-1.5 p-2 bg-ctp-surface0/30 border border-ctp-surface0 w-full">
-          {data.languages.slice(0, 4).map((lang, index) => (
-            <div key={index} className="flex items-center justify-between text-xs w-full">
+          {data.languages.slice(0, 4).map((lang) => (
+            <div key={lang.name} className="flex items-center justify-between text-xs w-full">
               <span className="text-[var(--color-white-80)]">{lang.name}</span>
               <div className="flex items-center gap-2">
                 <ProgressBar value={lang.percent} width={12} color="neon" />
@@ -72,8 +72,8 @@ export const WakaTimeWidget: React.FC = () => {
           Editores
         </div>
         <div className="space-y-1.5 p-2 bg-ctp-surface0/30 border border-ctp-surface0 w-full">
-          {data.editors.map((editor, index) => (
-            <div key={index} className="flex items-center justify-between text-xs w-full">
+          {data.editors.map((editor) => (
+            <div key={editor.name} className="flex items-center justify-between text-xs w-full">
               <span className="text-[var(--color-white-80)]">{editor.name}</span>
               <div className="flex items-center gap-2">
                 <ProgressBar value={editor.percent} width={12} color="magenta" />
