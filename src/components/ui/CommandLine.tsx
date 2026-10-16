@@ -75,11 +75,11 @@ export const CommandLine: React.FC<CommandLineProps> = ({
             autoCorrect="off"
             autoCapitalize="off"
             aria-label="command line"
-            className="tui-command-input h-full"
+            className="h-full"
           />
         </div>
       ) : error ? (
-        <div className="tui-cmdline-feedback flex items-center flex-1" style={{ minWidth: 0 }}>
+        <div className="flex items-center flex-1" style={{ minWidth: 0 }}>
           <span className="text-ctp-red font-bold truncate">{error}</span>
         </div>
       ) : navMode === 'vim' ? (

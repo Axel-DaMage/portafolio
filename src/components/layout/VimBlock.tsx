@@ -36,7 +36,7 @@ export const VimBlock: React.FC<VimBlockProps> = ({
       aria-label={title}
       onClick={() => onSelectBlock(blockIndex)}
       onKeyDown={handleKeyDown}
-      className={`vim-block vim-block-focusable p-3 rounded-none relative cursor-pointer mb-3 text-left ${
+      className={`vim-block p-3 rounded-none relative cursor-pointer mb-3 text-left ${
         isActive ? 'vim-block-active' : ''
       }`}
     >

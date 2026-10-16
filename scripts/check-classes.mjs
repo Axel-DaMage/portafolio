@@ -2,27 +2,21 @@
 /**
  * check-classes.mjs — audits that every class token referenced in `className`
  * attributes across src/**​/*.tsx has a matching selector in the hand-rolled
- * utility layer (src/styles/*.css + src/index.css). Exits non-zero on misses.
+ * layer (every .css file under src/). Exits non-zero on misses.
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const SRC = join(process.cwd(), 'src');
 
-// Legacy components not imported by any live view (pending removal).
-const EXCLUDED_FILES = new Set([
-  'Box.tsx', 'Button.tsx', 'WindowPanel.tsx', 'GlitchText.tsx',
-  'CorruptedBlock.tsx', 'Typewriter.tsx', 'Cursor.tsx', 'Separator.tsx',
-]);
-
 // String fragments evaluated as JS, not emitted as CSS classes.
 const IGNORE_TOKENS = new Set(['vim', 'normal', 'w-']);
 
-function* walk(dir) {
+function* walk(dir, ext) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const path = join(dir, entry.name);
-    if (entry.isDirectory()) yield* walk(path);
-    else if (entry.name.endsWith('.tsx')) yield path;
+    if (entry.isDirectory()) yield* walk(path, ext);
+    else if (entry.name.endsWith(ext)) yield path;
   }
 }
 
@@ -109,10 +103,7 @@ function classNameSpans(code) {
 
 // Collects classes defined in the stylesheet layer (unescapes CSS selectors).
 function collectDefined() {
-  const files = [join(SRC, 'index.css')];
-  for (const f of readdirSync(join(SRC, 'styles'))) {
-    if (f.endsWith('.css')) files.push(join(SRC, 'styles', f));
-  }
+  const files = [...walk(SRC, '.css')];
   const defined = new Set();
   for (const file of files) {
     const css = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
@@ -130,8 +121,7 @@ function collectDefined() {
 const defined = collectDefined();
 const missing = new Map();
 
-for (const file of walk(SRC)) {
-  if (EXCLUDED_FILES.has(file.split('/').pop())) continue;
+for (const file of walk(SRC, '.tsx')) {
   const code = readFileSync(file, 'utf8');
   for (const span of classNameSpans(code)) {
     for (const chunk of extractLiterals(span)) {
