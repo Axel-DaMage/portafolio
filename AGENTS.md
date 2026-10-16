@@ -43,16 +43,18 @@ Single-page continuous document structured into vim blocks inside a LazyVim edit
 ```
 src/
 ├── components/
-│   ├── animations/    # Typewriter, efectos de texto (index.ts)
-│   ├── layout/        # TerminalLayout, SectionBlock, VimBlock (index.ts)
+│   ├── layout/        # TerminalLayout, SectionBlock, VimBlock, sidebar.css (index.ts)
 │   ├── sections/      # Hero, Dashboard, Projects, About, Telemetry, Contact (index.ts)
-│   ├── ui/            # ModeModal, ProgressBar, Cursor, Box, Button, etc. (index.ts)
+│   ├── ui/            # ModeModal, CommandLine, ProgressBar (index.ts)
 │   └── widgets/       # GitHubWidget, WakaTimeWidget (index.ts)
 ├── hooks/             # useLiveTimer, hooks reactivos (index.ts)
 ├── services/          # github.ts, wakatime.ts (index.ts)
-├── styles/            # variables.css, reset.css, animations.css, terminal.css
+├── styles/            # variables.css, reset.css, animations.css, terminal.css, a11y.css
+├── test/              # setup.ts (matchers jest-dom de Vitest)
 ├── types/             # navigation.ts, github.ts, wakatime.ts, index.ts
 └── utils/             # formatters.ts (cálculo tiempo transcurrido), index.ts
+
+scripts/               # check-classes.mjs — auditoría className/CSS usada en CI
 ```
 
 ### Layout Elements
@@ -112,4 +114,16 @@ pnpm run build
 
 # Verificación de linting
 pnpm run lint
+
+# Suite de tests (Vitest + Testing Library, jsdom)
+pnpm test
+
+# Auditoría: falla si hay tokens de className sin definición CSS
+node scripts/check-classes.mjs
 ```
+
+## CI / Deploy
+
+- `.github/workflows/ci.yml`: install (pnpm, versión vía `packageManager` en `package.json`), lint, auditoría de clases, tests y build — en pushes a `main` y en PRs.
+- `.github/workflows/deploy.yml`: build con `VITE_BASE_PATH=/portafolio/`, copia `dist/index.html` a `dist/404.html` (fallback SPA) y publica en GitHub Pages.
+- `.github/dependabot.yml`: updates npm semanales agrupados.

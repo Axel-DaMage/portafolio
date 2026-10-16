@@ -22,7 +22,10 @@ pnpm install        # install dependencies
 pnpm dev            # start the dev server
 pnpm run build      # type-check (tsc -b) and produce a production bundle
 pnpm run lint       # run ESLint
+pnpm test           # run the Vitest suite (jsdom + Testing Library)
 pnpm run preview    # preview the production build locally
+
+node scripts/check-classes.mjs   # audit: fail on className tokens with no CSS definition
 ```
 
 ## Navigation modes
@@ -69,16 +72,18 @@ the widgets degrade gracefully to bundled mock data. Copy `.env.example` to
 ```
 src/
 ├── components/
-│   ├── animations/    # Typewriter and text effects
-│   ├── layout/        # TerminalLayout, SectionBlock, VimBlock
+│   ├── layout/        # TerminalLayout, SectionBlock, VimBlock (+ sidebar.css)
 │   ├── sections/      # Hero, Dashboard, Projects, About, Telemetry, Contact
-│   ├── ui/            # ModeModal, ProgressBar, Cursor, Box, Button, ...
+│   ├── ui/            # ModeModal, CommandLine, ProgressBar
 │   └── widgets/       # GitHubWidget, WakaTimeWidget
 ├── hooks/             # useLiveTimer and reactive hooks
-├── services/          # github.ts, wakatime.ts data fetchers
-├── styles/            # variables.css, reset.css, animations.css, terminal.css
+├── services/          # github.ts, wakatime.ts data fetchers (+ tests)
+├── styles/            # variables.css, reset.css, animations.css, terminal.css, a11y.css
+├── test/              # Vitest setup (jest-dom matchers)
 ├── types/             # navigation.ts, github.ts, wakatime.ts
-└── utils/             # formatters.ts (elapsed-time helpers)
+└── utils/             # formatters.ts (elapsed-time helpers, + tests)
+
+scripts/             # check-classes.mjs — className/CSS audit used in CI
 ```
 
 Each module exposes a barrel `index.ts`.
@@ -92,5 +97,8 @@ with `VITE_BASE_PATH=/portafolio/`, which `vite.config.ts` picks up as the
 
 To enable it: **Settings -> Pages -> Source: GitHub Actions**.
 
-CI (`.github/workflows/ci.yml`) runs lint + build on pushes to `main` and on
-pull requests.
+CI (`.github/workflows/ci.yml`) runs lint, the className audit, the Vitest
+suite and a production build on pushes to `main` and on pull requests. The
+deploy workflow also emits `dist/404.html` so Pages serves the SPA on deep
+links and refreshes. Dependency updates are handled by Dependabot
+(`.github/dependabot.yml`, weekly grouped npm PRs).
