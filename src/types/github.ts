@@ -1,5 +1,5 @@
 export interface GitHubEvent {
-  type: string;
+  type: GitHubEventType;
   repo: string;
   timestamp: string; // Formato ISO 24h
   actionText: string;

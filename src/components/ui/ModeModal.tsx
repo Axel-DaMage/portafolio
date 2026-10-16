@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { NavMode } from '../../types';
 
 export type { NavMode };
@@ -14,6 +14,19 @@ export const ModeModal: React.FC<ModeModalProps> = ({
   onSelectMode,
   currentMode,
 }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Initial focus + focus restore on close
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const target =
+      dialogRef.current?.querySelector<HTMLElement>('[data-autofocus]') ??
+      dialogRef.current?.querySelector<HTMLElement>('button');
+    target?.focus();
+    return () => previous?.focus();
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -27,6 +40,26 @@ export const ModeModal: React.FC<ModeModalProps> = ({
       } else if (e.key === 'Escape' || e.key.toLowerCase() === 'm') {
         e.preventDefault();
         onSelectMode(currentMode);
+      } else if (e.key === 'Tab') {
+        const items = Array.from(
+          dialogRef.current?.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          ) ?? []
+        ).filter((el) => !el.hasAttribute('disabled'));
+        if (items.length === 0) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        const active = document.activeElement;
+        const inside = dialogRef.current?.contains(active) ?? false;
+        if (e.shiftKey) {
+          if (!inside || active === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else if (!inside || active === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
 
@@ -38,11 +71,20 @@ export const ModeModal: React.FC<ModeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop p-4 font-mono select-none">
-      <div className="w-full max-w-lg bg-ctp-base border border-ctp-surface1 shadow-2xl p-4 md:p-6 text-left space-y-4">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mode-modal-title"
+        className="w-full max-w-lg bg-ctp-base border border-ctp-surface1 shadow-2xl p-4 md:p-6 text-left space-y-4"
+      >
         {/* Modal Header */}
         <div className="border-b border-ctp-surface0 pb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs md:text-sm font-bold text-[var(--color-white)] tracking-wide">
+            <span
+              id="mode-modal-title"
+              className="text-xs md:text-sm font-bold text-[var(--color-white)] tracking-wide"
+            >
               Modo de navegación
             </span>
           </div>
@@ -62,6 +104,7 @@ export const ModeModal: React.FC<ModeModalProps> = ({
         <div className="space-y-3 pt-1">
           {/* Option 1: MODO VIM */}
           <button
+            data-autofocus
             onClick={() => onSelectMode('vim')}
             className={`w-full p-4 border text-left transition-colors flex flex-col gap-1.5 cursor-pointer ${
               currentMode === 'vim'

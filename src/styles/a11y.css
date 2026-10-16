@@ -1,0 +1,43 @@
+/* ==========================================
+   Accessibility: keyboard focus & motion
+   ========================================== */
+
+/* Visible keyboard focus ring (Catppuccin Mauve accent) */
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible,
+.vim-block:focus-visible {
+  outline: 2px solid var(--ctp-mauve);
+  outline-offset: 2px;
+}
+
+/* Reduced motion: kill overlays, flicker and smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+  .scanlines {
+    display: none;
+  }
+
+  .animate-blink,
+  .corrupted-active,
+  .animate-spin,
+  .animate-beam,
+  [class*='animate-sys-node-'],
+  [class*='animate-footer-icon-'],
+  .electric-panel,
+  .crt-vignette {
+    animation: none !important;
+  }
+
+  .scroll-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  /* Conservative catch-all: near-instant animations/transitions */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
