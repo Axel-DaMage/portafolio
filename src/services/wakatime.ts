@@ -3,7 +3,7 @@ import type { WakaTimeStats } from '../types';
 // Elegant Mock Data for WakaTime
 const mockWakaTimeStats: WakaTimeStats = {
   totalHours7d: '42h 15m',
-  totalHoursToday: '5h 32m',
+  dailyAverage: '5h 32m',
   languages: [
     { name: 'TypeScript', percent: 67 },
     { name: 'React/JSX', percent: 48 },
@@ -59,7 +59,7 @@ export const fetchWakaTimeStats = async (): Promise<WakaTimeStats> => {
 
     return {
       totalHours7d: stats.human_readable_total_including_other_language || '42h 15m',
-      totalHoursToday: stats.human_readable_daily_average || '5h 32m',
+      dailyAverage: stats.human_readable_daily_average || '5h 32m',
       languages,
       editors,
     };

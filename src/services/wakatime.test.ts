@@ -16,7 +16,7 @@ describe('fetchWakaTimeStats', () => {
     vi.stubEnv('VITE_WAKATIME_API_KEY', '')
     const stats = await fetchWakaTimeStats()
     expect(stats.totalHours7d).toBe('42h 15m')
-    expect(stats.totalHoursToday).toBe('5h 32m')
+    expect(stats.dailyAverage).toBe('5h 32m')
     expect(stats.languages).toHaveLength(5)
     expect(stats.editors).toHaveLength(2)
   })

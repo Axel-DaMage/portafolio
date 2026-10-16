@@ -1,0 +1,80 @@
+/* ==========================================
+   Neo-tree Sidebar — Responsive Layout
+   >= 768px: in-flow column (desktop behavior unchanged)
+   <  768px: absolute overlay drawer over the editor buffer
+   ========================================== */
+
+/* Neutral border utility referenced by the sidebar markup but missing
+   from terminal.css in this branch. */
+.border-ctp-surface0 {
+  border-color: var(--ctp-surface0) !important;
+}
+
+/* Sidebar geometry — the w-56 / md:w-60 / min-w-[14rem] / min-w-[15rem]
+   utilities used in the markup are not defined in this branch, so the
+   sidebar width and right border are owned here. */
+.tui-sidebar {
+  width: 14rem;
+  min-width: 14rem;
+  flex-shrink: 0;
+  border-right: 1px solid var(--ctp-surface0);
+  background-color: var(--ctp-mantle);
+}
+
+@media (min-width: 768px) {
+  .tui-sidebar {
+    width: 15rem;
+    min-width: 15rem;
+  }
+}
+
+/* Header: the title may ellipsize, but [b:ocultar] must never wrap
+   or collide with it at narrow widths. */
+.neo-tree-header-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.neo-tree-hide-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Footer links row — `justify-around` is not defined in this branch,
+   so the links used to bunch to the left. Real spacing lives here. */
+.neo-tree-footer-links {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Slide-in animation: the drawer mounts on isSidebarOpen &&, so a
+   keyframe animation on transform translateX gives the slide-in. */
+@keyframes neo-tree-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile drawer (< 768px): the body row is position:relative, so the
+   sidebar floats over the editor buffer between bufferline and
+   statusline instead of consuming layout width. */
+@media (max-width: 767px) {
+  .tui-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: var(--z-overlay);
+    box-shadow: 8px 0 24px rgba(17, 17, 27, 0.6);
+    transform: translateX(0);
+    transition: transform 200ms ease-out;
+    animation: neo-tree-slide-in 200ms ease-out;
+  }
+}
