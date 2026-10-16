@@ -1,5 +1,5 @@
 {
-  "name": "temp-scaffold",
+  "name": "portafolio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -27,6 +27,6 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.0.16"
   }
 }

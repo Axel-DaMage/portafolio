@@ -10,7 +10,7 @@ export interface WakaTimeEditor {
 
 export interface WakaTimeStats {
   totalHours7d: string;
-  totalHoursToday: string;
+  dailyAverage: string;
   languages: WakaTimeLanguage[];
   editors: WakaTimeEditor[];
 }

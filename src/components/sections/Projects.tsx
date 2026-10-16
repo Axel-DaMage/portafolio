@@ -15,7 +15,6 @@ export const Projects: React.FC = () => {
       description: 'Portafolio minimalista con estética de terminal, soporte para navegación por teclado y paleta Catppuccin Mocha.',
       tags: ['React 19', 'TypeScript', 'CSS Modules'],
       githubUrl: 'https://github.com/Axel-DaMage/portafolio',
-      demoUrl: '#',
     },
     {
       title: 'LogOS Platform',
@@ -39,9 +38,9 @@ export const Projects: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
-        {projectsList.map((project, index) => (
+        {projectsList.map((project) => (
           <div
-            key={index}
+            key={project.title}
             className="p-3 bg-ctp-surface0/30 border border-ctp-surface0 flex flex-col justify-between space-y-2.5 transition-colors hover:border-ctp-surface2"
           >
             <div className="space-y-1.5">
@@ -57,9 +56,9 @@ export const Projects: React.FC = () => {
             <div className="space-y-2 pt-1 border-t border-ctp-surface0">
               {/* Tags */}
               <div className="flex flex-wrap gap-1">
-                {project.tags.map((tag, tagIdx) => (
+                {project.tags.map((tag) => (
                   <span
-                    key={tagIdx}
+                    key={tag}
                     className="px-1.5 py-0.2 text-[10px] bg-ctp-surface1/50 text-ctp-subtext border border-ctp-surface1 font-mono"
                   >
                     {tag}
