@@ -28,6 +28,9 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
+      - name: Audit className tokens
+        run: node scripts/check-classes.mjs
+
       - name: Test
         run: pnpm test
 

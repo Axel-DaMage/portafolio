@@ -38,6 +38,9 @@ jobs:
         env:
           VITE_BASE_PATH: /portafolio/
 
+      - name: SPA fallback
+        run: cp dist/index.html dist/404.html
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
