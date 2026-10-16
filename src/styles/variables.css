@@ -1,36 +1,70 @@
 :root {
-  /* Core Color Palette (Cyberpunk Scarlet Protocol Ghostty theme) */
-  --color-black: #101116;
-  --color-white: #ffffff;
-  --color-magenta: #e41951;  /* Scarlet / Foreground */
-  --color-neon: #60fdff;     /* Bright Cyan for accents */
+  /* Catppuccin Mocha Core Palette */
+  --ctp-rosewater: #f5e0dc;
+  --ctp-flamingo: #f2cdcd;
+  --ctp-pink: #f5c2e7;
+  --ctp-mauve: #cba6f7;
+  --ctp-red: #f38ba8;
+  --ctp-maroon: #eba0ac;
+  --ctp-peach: #fab387;
+  --ctp-yellow: #f9e2af;
+  --ctp-green: #a6e3a1;
+  --ctp-teal: #94e2d5;
+  --ctp-sky: #89dceb;
+  --ctp-sapphire: #74c7ec;
+  --ctp-blue: #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-text: #cdd6f4;
+  --ctp-subtext1: #bac2de;
+  --ctp-subtext0: #a6adc8;
+  --ctp-overlay2: #9399b2;
+  --ctp-overlay1: #7f849c;
+  --ctp-overlay0: #6c7086;
+  --ctp-surface2: #585b70;
+  --ctp-surface1: #45475a;
+  --ctp-surface0: #313244;
+  --ctp-base: #1e1e2e;
+  --ctp-mantle: #181825;
+  --ctp-crust: #11111b;
 
-  /* Opacities of White */
-  --color-white-05: rgba(255, 255, 255, 0.05);
-  --color-white-10: rgba(255, 255, 255, 0.1);
-  --color-white-20: rgba(255, 255, 255, 0.2);
-  --color-white-40: rgba(255, 255, 255, 0.4);
-  --color-white-60: rgba(255, 255, 255, 0.6);
-  --color-white-80: rgba(255, 255, 255, 0.8);
+  /* Theme Mapping */
+  --color-black: #11111b;
+  --color-bg-base: #1e1e2e;
+  --color-bg-mantle: #181825;
+  --color-white: #cdd6f4;
+  --color-magenta: #cba6f7;  /* Mauve as primary */
+  --color-neon: #94e2d5;     /* Teal as secondary */
+  --color-blue: #89b4fa;
+  --color-green: #a6e3a1;
+  --color-peach: #fab387;
+  --color-yellow: #f9e2af;
+  --color-red: #f38ba8;
+  --color-lavender: #b4befe;
+  --color-pink: #f5c2e7;
 
-  /* Solid Color Variants (No Glows) - approximated from theme */
-  --color-magenta-dark: #b80a3a;
-  --color-magenta-darker: #8b062b;
-  --color-magenta-deep: #460215;
-  --color-neon-dark: #3fb6b8;
-  --color-neon-darker: #2f888a;
-  --color-neon-deep: #174445;
+  /* Opacities and Shades */
+  --color-white-05: rgba(205, 214, 244, 0.05);
+  --color-white-10: rgba(205, 214, 244, 0.1);
+  --color-white-20: rgba(205, 214, 244, 0.2);
+  --color-white-40: rgba(205, 214, 244, 0.4);
+  --color-white-60: rgba(205, 214, 244, 0.6);
+  --color-white-80: rgba(205, 214, 244, 0.8);
 
-  /* Transparent variants for borders/sweeps */
-  --color-magenta-05: rgba(228, 25, 81, 0.05);
-  --color-magenta-10: rgba(228, 25, 81, 0.1);
-  --color-magenta-20: rgba(228, 25, 81, 0.2);
-  --color-magenta-50: rgba(228, 25, 81, 0.5);
+  /* Transparent variants for accents */
+  --color-magenta-05: rgba(203, 166, 247, 0.05);
+  --color-magenta-10: rgba(203, 166, 247, 0.1);
+  --color-magenta-20: rgba(203, 166, 247, 0.2);
+  --color-magenta-50: rgba(203, 166, 247, 0.5);
 
-  --color-neon-05: rgba(96, 253, 255, 0.05);
-  --color-neon-10: rgba(96, 253, 255, 0.1);
-  --color-neon-20: rgba(96, 253, 255, 0.2);
-  --color-neon-50: rgba(96, 253, 255, 0.5);
+  --color-neon-05: rgba(148, 226, 213, 0.05);
+  --color-neon-10: rgba(148, 226, 213, 0.1);
+  --color-neon-20: rgba(148, 226, 213, 0.2);
+  --color-neon-50: rgba(148, 226, 213, 0.5);
+
+  --color-blue-10: rgba(137, 180, 250, 0.1);
+  --color-blue-20: rgba(137, 180, 250, 0.2);
+  --color-green-10: rgba(166, 227, 161, 0.1);
+  --color-green-20: rgba(166, 227, 161, 0.2);
 
   /* Fonts */
   --font-mono: 'JetBrains Mono', 'FiraCode Nerd Font Mono', 'Fira Code', 'Cascadia Code', monospace;
@@ -42,7 +76,7 @@
   --font-size-2xl: 2rem;
   --font-size-3xl: 2.5rem;
 
-  /* Espaciamiento */
+  /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
@@ -57,7 +91,7 @@
   --border-magenta: 1px solid var(--color-magenta);
   --border-neon: 1px solid var(--color-neon);
 
-  /* Transiciones */
+  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 300ms ease;
   --transition-slow: 500ms ease;

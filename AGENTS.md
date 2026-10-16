@@ -1,55 +1,115 @@
 # AGENTS.md — Portafolio Terminal TUI
 
-Fresh project, **not yet scaffolded**. No `package.json`, no build config exists. See `plan.md` for full spec.
+Single-window Terminal TUI portfolio inspired by LazyVim / Neovim, built with React, TypeScript, and Catppuccin Mocha.
 
-## Stack (planned)
+## Stack & Tooling
 
-- Vite + React 18+ + TypeScript
-- pnpm (not npm/yarn)
-- CSS Modules + CSS custom properties
-- Fira Code (variable, self-hosted or Google Fonts)
-- ESLint + Prettier
+- **Runtime / Framework**: Vite + React 19 + TypeScript
+- **Package Manager**: pnpm (`pnpm dev`, `pnpm run build`, `pnpm run lint`)
+- **State & Data Fetching**: SWR (5 min TTL) with graceful offline/mock fallback
+- **Styling**: Vanilla CSS custom properties (Catppuccin Mocha) + utility classes in `src/styles/`
+- **Linter / Formatter**: ESLint + TypeScript ESLint
 
-## Golden rules
+## Golden Rules
 
-- **No emojis anywhere**
-- **No commits or pushes until explicitly asked**
-- Palette is closed: only `#090909` (bg), `#ffffff` (text/borders), `#ff0066` (primary), `#00fff2` (secondary)
-- `plan.md` is the single source of truth for design, architecture, components, animations, integrations (GitHub + WakaTime APIs)
+- **No emojis anywhere**: Strictly forbidden across all code, components, UI text, styles, comments, git messages, and documentation.
+- **No commits or pushes until explicitly asked**: Work in local workspace only until the user gives explicit command to commit/push.
+- **Neutral box borders**: Container box borders must use neutral Catppuccin surface colors (`--ctp-surface0`, `--ctp-surface1`), never colored borders.
+- **Language**: User-facing copy in Spanish, preserving authentic Unix/developer terms (`whoami`, `cat`, `ls`, file names, `git:(main)`).
+- **Architecture integrity**: Maintain modular folder structure with barrel exports (`index.ts`) in each module.
 
-## First-time setup
+## Color Palette (Catppuccin Mocha)
 
-```sh
-pnpm create vite . --template react-ts
-pnpm install
-```
+| Variable | Hex | Role |
+|---|---|---|
+| `--ctp-crust` | `#11111b` | Background más oscuro (commandline, vignette) |
+| `--ctp-mantle` | `#181825` | Background de barras (bufferline, statusline, sidebar) |
+| `--ctp-base` | `#1e1e2e` | Background principal del editor |
+| `--ctp-surface0` | `#313244` | Bordes neutrales, cards y tabs activas |
+| `--ctp-surface1` | `#45475a` | Bordes de acento neutral y divisores |
+| `--ctp-surface2` | `#585b70` | Resaltado de hover neutral |
+| `--ctp-text` | `#cdd6f4` | Texto principal de alto contraste |
+| `--ctp-subtext0` | `#a6adc8` | Texto secundario y etiquetas |
+| `--ctp-overlay1` | `#7f849c` | Texto atenuado, números de línea |
+| `--ctp-mauve` | `#cba6f7` | **Acento primario**: modo vim, tags de comando, badges |
+| `--ctp-teal` | `#94e2d5` | **Acento secundario**: prompts, modo normal, métricas |
+| `--ctp-peach` | `#fab387` | Puntos de lista, detalles clave |
+| `--ctp-blue` | `#89b4fa` | Enlaces y tags de sistemas |
 
-Then implement phases per `plan.md` §9.
+## TUI Architecture & Layout
 
-## Architecture
+Single-page continuous document structured into vim blocks inside a LazyVim editor interface:
 
 ```
 src/
-├── components/{ui,layout,sections,widgets,animations}/
-├── hooks/
-├── services/
-├── styles/{variables,reset,animations,terminal}.css
-├── types/
-└── utils/
+├── components/
+│   ├── animations/    # Typewriter, efectos de texto (index.ts)
+│   ├── layout/        # TerminalLayout, SectionBlock, VimBlock (index.ts)
+│   ├── sections/      # Hero, Dashboard, Projects, About, Telemetry, Contact (index.ts)
+│   ├── ui/            # ModeModal, ProgressBar, Cursor, Box, Button, etc. (index.ts)
+│   └── widgets/       # GitHubWidget, WakaTimeWidget (index.ts)
+├── hooks/             # useLiveTimer, hooks reactivos (index.ts)
+├── services/          # github.ts, wakatime.ts (index.ts)
+├── styles/            # variables.css, reset.css, animations.css, terminal.css
+├── types/             # navigation.ts, github.ts, wakatime.ts, index.ts
+└── utils/             # formatters.ts (cálculo tiempo transcurrido), index.ts
 ```
 
-Monorepo root `src/components/` is the main entrypoint. No generated code. No frameworks beyond React.
+### Layout Elements
+1. **Top Bufferline (`.tui-bufferline`, 38px)**:
+   - Badge `LAZYVIM` + pestañas numeradas (`1 01_dashboard.lua`, `2 02_projects.tsx`, etc.).
+   - Información de git (`git:(main)`), selector de modo y usuario.
+2. **Left Sidebar (Neo-tree, 240px)**:
+   - Lista de archivos estructurada en la parte superior.
+   - Atajo `b` para alternar visibilidad.
+3. **Editor Buffer Central**:
+   - Desplazamiento continuo con canaleta de números de línea (`SectionBlock`).
+   - Bloques navegables con borde de bloque activo (`VimBlock`).
+4. **Bottom Statusline (`.tui-statusline`, 32px, Lualine)**:
+   - Indicador de modo (`MODO-VIM` / `MODO-NORMAL`).
+   - Ruta del archivo y componente activo (`portfolio.tsx [RO] › sección » bloque`).
+   - Codificación `utf-8`, tema `Catppuccin Mocha`, posición Ln/Col y porcentaje de scroll.
+5. **Bottom Commandline (`.tui-commandline`, 28px)**:
+   - Guía de atajos `:ayuda`, botón interactivo `[m] cambiar modo` y prompt `axel@portafolio:~$`.
 
-## Design constraints
+## Navigation Modes
 
-- Terminal/TUI aesthetic: box-drawing chars (`─│┌┐└┘├┤┬┴┼`), scanlines, CRT glow, typewriter, prompt-style (`user@host:~$`)
-- Timestamps in ISO 24h format; live timers updating every second
-- ASCII art assets go in `public/ascii-art/`
-- Respect `prefers-reduced-motion`
-- Prioritize fullscreen monitor layout (e.g. desktop full height) over mobile responsiveness, ensuring retro console elements align perfectly at standard fullscreen resolutions.
+- **Modo Vim** (`navMode: 'vim'`):
+  - `j` / `k` (o flechas): Avanzar / retroceder entre bloques de componentes.
+  - `1`..`5`: Salto inmediato a la sección correspondiente.
+  - `g` / `G`: Ir al inicio / final del búfer.
+  - `h`: Enfocar árbol Neo-tree.
+  - `b`: Ocultar / mostrar barra lateral.
+  - `m` / `M`: Abrir selector modal de modos.
+- **Modo Normal** (`navMode: 'normal'`):
+  - `ArrowDown` / `ArrowUp`: Navegar bloques.
+  - `Enter`: Enfocar bloque actual.
+  - `1`..`5`: Salto directo a secciones.
+  - `b`: Alternar barra lateral.
+  - `m` / `M`: Abrir selector modal de modos.
 
 ## Integrations
 
-- **GitHub**: `GET /users/{user}/events` — last 3 events with live timer. Auth via `VITE_GITHUB_TOKEN` env var (scope: repo, read:user).
-- **WakaTime**: `GET /api/v1/users/current/stats/last_7_days` — total hours, languages, editors, projects. Auth via `VITE_WAKATIME_API_KEY`.
-- Cache with React Query or SWR (5min TTL).
+- **GitHub Activity**:
+  - `fetchGitHubActivity(username)` en `src/services/github.ts`.
+  - Endpoint: `https://api.github.com/users/{user}/events`.
+  - Muestra los últimos 3 eventos con temporizador en vivo calculado en `src/utils/formatters.ts` (`useLiveTimer`).
+  - Auth opcional vía `VITE_GITHUB_TOKEN` con fallback a datos mock locales.
+- **WakaTime Metrics**:
+  - `fetchWakaTimeStats()` en `src/services/wakatime.ts`.
+  - Endpoint: `https://wakatime.com/api/v1/users/current/stats/last_7_days`.
+  - Métricas de horas (últimos 7 días, hoy), lenguajes y editores más usados.
+  - Auth opcional vía `VITE_WAKATIME_API_KEY` con fallback a datos mock locales.
+
+## Development Workflow
+
+```sh
+# Servidor de desarrollo
+pnpm dev
+
+# Verificación de compilación TypeScript y bundle Vite
+pnpm run build
+
+# Verificación de linting
+pnpm run lint
+```
